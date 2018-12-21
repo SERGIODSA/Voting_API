@@ -100,8 +100,8 @@ return [
     ],
 
     'oauth' => [
-        'client_id' => env('OAUTH_CLIENT_ID'),
-        'client_secret' => env('OAUTH_CLIENT_SECRET'),
+        'client_id' => env('OAUTH_CLIENT_ID', '2'),
+        'client_secret' => env('OAUTH_CLIENT_SECRET', 'mRnJefNLf5MmOIMvr1FgT9qAksmrcH3YlRwuZcv7'),
     ],
 
 ];
