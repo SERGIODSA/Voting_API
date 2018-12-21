@@ -14,14 +14,14 @@ class Vote extends Model
     protected $table = 'votes';
 
     protected $fillable = [
-        'fruid_id', 
+        'fruit_id', 
     ];
 
-    public function users(){
-        return $this->belongsTo('App\User');
+    public function user(){
+        return $this->hasOne('App\User');
     }
 
-    public function fruits(){
+    public function fruit(){
         return $this->belongsTo('App\Fruit');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Fruit;
 use App\Vote;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +16,15 @@ class VoteController extends Controller
      */
     public function index()
     {
-        return Response()->json(Vote::whereHas('users')->get(), 200);
+        $results = Fruit::with('votes')->get()->transform(function ($item, $key) {
+            $itemArray = $item->toArray();
+            $itemArray['votes'] = count($itemArray['votes']);
+            return $itemArray;
+        })->toArray();  
+
+        usort($results, function ($a, $b) { return $b['votes'] - $a['votes']; });
+
+        return Response()->json($results, 200);
     }
 
     /**
@@ -24,10 +33,11 @@ class VoteController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Vote $vote)
+    public function store(Request $request, Fruit $fruit)
     {
-        if(!count(Auth::User()->votes)){
-            Auth::User()->votes()->attach($vote->id);
+        if(!count(Auth::User()->vote)){
+            $vote = Vote::create(['fruit_id' => $fruit->id]);
+            $vote->user()->save(Auth::user());
 
             return Response()->json(['message' => 'success'], 201);
         }
@@ -35,48 +45,4 @@ class VoteController extends Controller
         return Response()->json(['message' => 'user already voted'], 400);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Vote  $vote
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Vote $vote)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Vote  $vote
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Vote $vote)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Vote  $vote
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Vote $vote)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Vote  $vote
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Vote $vote)
-    {
-        //
-    }
 }

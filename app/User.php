@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'vote_id',
     ];
 
     protected $nullable = [
@@ -32,8 +32,8 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function votes(){
-        return $this->hasOne('App\Vote');
+    public function vote(){
+        return $this->belongsTo('App\Vote');
     }
 
     public function findForPassport($username) {

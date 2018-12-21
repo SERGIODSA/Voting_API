@@ -11,7 +11,7 @@ class Fruit extends Model
         'name'
     ];
 
-    public function vote(){
+    public function votes(){
         return $this->hasMany('App\Vote');
     }
 }

@@ -14,3 +14,8 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/routes', function () {
+	$exitCode = Artisan::call('route:list');
+	dd($exitCode);
+});

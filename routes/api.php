@@ -17,5 +17,5 @@ Route::post('/login', 'AuthController@login');
 
 Route::middleware('auth:api')->group(function () {
 	Route::get('votes', 'VoteController@index');
-	Route::post('votes/{vote}/item', 'VoteController@store')->where('vote', '[0-9]+');
+	Route::post('votes/{fruit}/fruit', 'VoteController@store')->where('fruit', '[0-9]+');
 });
